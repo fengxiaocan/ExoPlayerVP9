@@ -1,6 +1,7 @@
 plugins {
   alias(libs.plugins.android.library)
   alias(libs.plugins.kotlin.android)
+  id("maven-publish")
 }
 
 android {
@@ -57,4 +58,20 @@ dependencies {
   compileOnly("org.checkerframework:checker-compat-qual:2.5.5")
   compileOnly("org.checkerframework:checker-qual:3.13.0")
   compileOnly("org.jetbrains.kotlin:kotlin-annotations-jvm:1.8.20")
+}
+
+publishing {
+  publications {
+    create<MavenPublication>("release") {
+      groupId = "com.github.fengxiaocan"
+      artifactId = "ExoPlayerVP9"
+      version = "1.0"
+
+      // 使用 afterEvaluate 是 Groovy 风格，Kotlin DSL 不需要这样处理
+      // 你应该直接用下面这种方式设置 component
+      afterEvaluate {
+        from(components["release"])
+      }
+    }
+  }
 }
